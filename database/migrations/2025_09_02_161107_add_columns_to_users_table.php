@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('auth_models', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('cash')->default(0);
+            $table->boolean('is_admin')->default(false);
         });
     }
 
@@ -22,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('auth_models');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('cash');
+            $table->dropColumn('is_admin');
+        });
     }
 };
