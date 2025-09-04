@@ -17,7 +17,14 @@ class AuthController extends Controller
     }
 
     public function postAuth(Request $request){
-        
+        $credentials = $request->all();
+        if(Auth::attempt($credentials, $request->has('remember'))){
+            $request->session()->regenerate();
+            return redirect()->intended('/home');
+        }
+        return back()->withErrors([
+            'name' => 'Неверные учетные данные.',
+        ])->withInput($request->except('password'));
     }
 
     public function postRegister(RegisterRequest $request){

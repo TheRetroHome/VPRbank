@@ -32,12 +32,12 @@
     <!-- Верхняя панель с меню пользователя -->
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('home') }}">ВПР</a>
+            <a class="navbar-brand" href="/">ВПР</a>
             
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('home') }}">Главная</a>
+                        <a class="nav-link active" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">О нас</a>
@@ -57,7 +57,7 @@
                             <span class="me-3">Привет, {{ Auth::user()->name }}!</span>
                         </div>
                         
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        <form action="/authorization/logout" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger btn-sm">
                                 Выйти
@@ -65,10 +65,10 @@
                         </form>
                     @else
                         <!-- Пользователь не авторизован -->
-                        <a href="{{ route('getAuth') }}" class="btn btn-outline-primary btn-sm me-2">
+                        <a href="/authorization" class="btn btn-outline-primary btn-sm me-2">
                             Авторизоваться
                         </a>
-                        <a href="{{ route('getAuth') }}" class="btn btn-primary btn-sm">
+                        <a href="/authorization" class="btn btn-primary btn-sm">
                             Зарегистрироваться
                         </a>
                     @endauth
@@ -125,8 +125,8 @@
                             <div class="alert alert-info">
                                 <h4>Добро пожаловать, гость!</h4>
                                 <p>Для доступа ко всем функциям сайта, пожалуйста, 
-                                   <a href="{{ route('getAuth') }}">авторизуйтесь</a> или 
-                                   <a href="{{ route('getAuth') }}">зарегистрируйтесь</a>.
+                                   <a href="/authorization">авторизуйтесь</a> или 
+                                   <a href="/authorization">зарегистрируйтесь</a>.
                                 </p>
                             </div>
                         @endauth
