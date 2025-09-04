@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             'name'      => ['required', 'string', 'unique:users', 'max:50', 'min:5'],
             'email'     => ['required', 'email', 'unique:users'],
-            'password'  => ['required', 'password'],
+            'password'  => ['required', 'max:50', 'min:8'],
         ];
     }
 
@@ -33,12 +33,17 @@ class RegisterRequest extends FormRequest
         return [
             'name.required'      => 'Имя пользователя обязательно для заполнения',
             'name.string'        => 'Имя пользователя должно быть строкой',
-            'name.unique'        => 'Имя пользователя занято',
+            'name.unique'        => 'Это имя пользователя уже занято',
             'name.max'           => 'Превышен лимит символов в имени пользователя',
             'name.min'           => 'Недостаточно символов в имени пользователя',
 
             'email.required'     => 'Email обязателен для заполнения',
-            'email.'
+            'email.email'        => 'Email должен быть в формате почты',
+            'email.unique'       => 'Этот email адрес уже занят',
+
+            'password.required'  => 'Пароль обязателен для заполнения',
+            'password.max'       => 'Превышен лимит символов в пароле',
+            'password.min'       => 'Недостаточно символов в пароле',
         ];
     }
 }

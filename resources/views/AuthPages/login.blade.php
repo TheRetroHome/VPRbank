@@ -181,7 +181,7 @@ body {
  .tab{ padding: 40px 20px; }
 }
 </style>
-
+@csrf
 <div class="container">
  <div class="row">
  <div class="col-md-offset-3 col-md-6">
@@ -203,14 +203,20 @@ body {
  <!-- Tab panes -->
  <div class="tab-content tabs">
  <div role="tabpanel" class="tab-pane fade in active" id="Section1">
- <form class="form-horizontal">
+ <form class="form-horizontal" method="POST" action="{{route('postAuth')}}">
  <div class="form-group">
  <label for="exampleInputEmail1">Имя пользователя</label>
- <input type="email" class="form-control" id="exampleInputEmail1">
+ <input type="name" name="name" class="form-control" id="exampleInputEmail1" value="{{old('name')}}">
+ @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+ @enderror
  </div>
  <div class="form-group">
  <label for="exampleInputPassword1">Пароль</label>
- <input type="password" class="form-control" id="exampleInputPassword1">
+ <input type="password" name="password" class="form-control" id="exampleInputPassword1" value="{{old('password')}}">
+ @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+ @enderror
  </div>
  <div class="form-group">
  <div class="main-checkbox">
@@ -228,18 +234,27 @@ body {
  </form>
  </div>
  <div role="tabpanel" class="tab-pane fade" id="Section2">
- <form class="form-horizontal">
+ <form class="form-horizontal" method="POST" action="{{route('postRegister')}}">
  <div class="form-group">
  <label for="exampleInputEmail1">Имя пользователя</label>
- <input type="text" class="form-control" id="exampleInputEmail1">
+ <input type="text" name="name" class="form-control" id="exampleInputEmail1" value="{{old('name')}}">
+ @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+ @enderror
  </div>
  <div class="form-group">
  <label for="exampleInputEmail1">Адрес электронной почты</label>
- <input type="email" class="form-control" id="exampleInputEmail1">
+ <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{old('email')}}">
+ @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+ @enderror
  </div>
  <div class="form-group">
  <label for="exampleInputPassword1">Пароль</label>
- <input type="password" class="form-control" id="exampleInputPassword1">
+ <input type="password" name="password" class="form-control" id="exampleInputPassword1" value="{{old('password')}}">
+ @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+ @enderror
  </div>
  <div class="form-group">
  <button type="submit" class="btn btn-default">Зарегестрироваться</button>
