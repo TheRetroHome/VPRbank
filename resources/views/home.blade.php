@@ -43,10 +43,30 @@
                         <a class="nav-link" href="">О нас</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/admin/info">АДМИН ПАНЕЛЬ</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="">Контакты</a>
                     </li>
                 </ul>
-                
+                <!-- Уведомления -->
+        @if(session('success'))
+            <div class="container mt-3">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="container mt-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
                 <div class="user-menu">
                     @auth
                         <!-- Пользователь авторизован -->
@@ -118,7 +138,7 @@
                             <div class="alert alert-success">
                                 <h4>Вы авторизованы!</h4>
                                 <p>Email: {{ Auth::user()->email }}</p>
-                                <p>Имя пользователя: {{ Auth::user()->username }}</p>
+                                <p>Имя пользователя: {{ Auth::user()->name }}</p>
                                 <p>Дата регистрации: {{ Auth::user()->created_at->format('d.m.Y') }}</p>
                             </div>
                         @else

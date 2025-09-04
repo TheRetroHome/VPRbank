@@ -16,11 +16,11 @@ class AuthController extends Controller
         return view('AuthPages.login');
     }
 
-    public function postAuth(Request $request){
-        $credentials = $request->all();
+    public function postAuth(LoginRequest $request){
+        $credentials = $request->only('name', 'password');
         if(Auth::attempt($credentials, $request->has('remember'))){
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+            return redirect('/');
         }
         return back()->withErrors([
             'name' => 'Неверные учетные данные.',
@@ -36,12 +36,13 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home')
+        return redirect('/')
         ->with('success', 'Регистрация пройдена успешно');
     }
 
     public function logout(){
         Auth::logout();
-        return redirect()->route('getAuth');
+        return redirect('/');
     }
+
 }
