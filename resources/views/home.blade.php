@@ -43,9 +43,6 @@
                         <a class="nav-link" href="">О нас</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/info">АДМИН ПАНЕЛЬ</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="">Контакты</a>
                     </li>
                 </ul>
@@ -117,11 +114,11 @@
                             <li class="list-group-item">
                                 <a href="" class="text-decoration-none">Сообщения</a>
                             </li>
-                            @auth
+                            @admin
                                 <li class="list-group-item">
-                                    <a href="" class="text-decoration-none">Панель управления</a>
+                                    <a href="/admin/info" class="text-decoration-none">Панель управления</a>
                                 </li>
-                            @endauth
+                            @endadmin
                         </ul>
                     </div>
                 </div>

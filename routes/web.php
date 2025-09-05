@@ -4,15 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::prefix('authorization')->group(function(){
-        Route::get('/', [AuthController::class, 'getAuth'])->name('getAuth');
+        Route::get('/', [AuthController::class, 'getAuth'])->middleware(GuestMiddleware::class)->name('getAuth');
         Route::post('/auth', [AuthController::class, 'postAuth'])->name('postAuth');
-        Route::post('/register', [AuthController::class, 'postRegister'])->name('postRegister');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/register', [AuthController::class, 'postRegister'])->middleware(GuestMiddleware::class)->name('postRegister');
+        Route::post('/logout', [AuthController::class, 'logout'])->middleware(AuthMiddleware::class)->name('logout');
  });
  Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function(){
         Route::get('/info', [AdminController::class, 'info'])->name('info');
