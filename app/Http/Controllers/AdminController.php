@@ -23,22 +23,8 @@ class AdminController extends Controller
     }
 
     public function deleteUser($id){
-        try{
-            $user = User::findOrFail($id);
-
-            if($user->id === Auth::id()){
-                return redirect('/')->with('error', 'Вы не можете удалить свой собственный аккаунт');
-            }
-            $user->delete();
-
-            return redirect('/')->with('success', 'Пользователь удалён');
-        }
-        catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return redirect('/')
-                ->with('error', 'Пользователь не найден!');
-        } catch (\Exception $e) {
-            return redirect('/')
-                ->with('error', 'Произошла ошибка при удалении: ' . $e->getMessage());
-        }
+        $result = $this->adminService->deleteUser($id);
+        return redirect($result['redirect'])
+            ->with($result['message'] ? 'success' : 'error', $result['message']);
     }
 }
