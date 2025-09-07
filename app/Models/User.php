@@ -51,6 +51,6 @@ class User extends Authenticatable
     }
 
     public function scopeUserSelect($query){
-        return $query->select('id', 'name', 'email', 'password', 'created_at');
+        return $query->select('id', 'name', 'email', 'password', 'created_at', 'is_admin');
     }
 }
