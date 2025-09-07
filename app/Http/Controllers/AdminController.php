@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AdminService;
 
 class AdminController extends Controller
 {
+    protected $adminService;
+
+    public function __construct(AdminService $adminService){
+        $this->adminService = $adminService;
+    }
+    /**
+     * Scope userSelect selects id, name, emails, password, created_at
+     */
     public function info(){
-        $users = User::select('id', 'name', 'email', 'password', 'created_at')->get();
+        $users = User::userSelect()->get();
         return view('info', compact('users'));
     }
 

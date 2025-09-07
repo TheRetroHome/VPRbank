@@ -49,4 +49,8 @@ class User extends Authenticatable
             'cash'     => 'integer',
         ];
     }
+
+    public function scopeUserSelect($query){
+        return $query->select('id', 'name', 'email', 'password', 'created_at');
+    }
 }
