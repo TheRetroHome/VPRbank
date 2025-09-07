@@ -27,4 +27,11 @@ class AdminController extends Controller
         return redirect($result['redirect'])
             ->with($result['message'] ? 'success' : 'error', $result['message']);
     }
+
+    public function setAdmin(Request $request, $id){
+        $is_admin = $request->onlyo('is_admin', false);
+        $user = $this->adminService->setAdmin($is_admin, $id);
+        return redirect($result['redirect'])
+            ->with($result['message'] ? 'success' : 'error', $result['message']);
+    }
 }

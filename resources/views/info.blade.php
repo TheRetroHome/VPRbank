@@ -10,6 +10,19 @@
     <div class="container mt-4">
         <h1>Список пользователей</h1>
         
+        <!-- Сообщения -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        
         @if($users->count() > 0)
             <table class="table table-striped">
                 <thead>
@@ -17,27 +30,50 @@
                         <th>ID</th>
                         <th>Имя</th>
                         <th>Email</th>
-                        <th>Дата регистрации</th>
+                        <th>Админ</th>  
+                        <th>Дата регистрации</th>  
+                        <th>Действия</th>  
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-    <tr>
-        <td>{{ $user->id }}</td>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->email }}</td>
-        <td>
-            <form action="{{ url('admin/users/' . $user->id) }}" method="POST" 
-                  onsubmit="return confirm('Вы уверены что хотите удалить этого пользователя?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm">
-                    Удалить
-                </button>
-            </form>
-        </td>
-    </tr>
-            @endforeach
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            @if($user->is_admin)
+                                <span class="badge bg-success">Да</span>
+                            @else
+                                <span class="badge bg-secondary">Нет</span>
+                            @endif
+                        </td>
+                        <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
+                        <td>
+                            <!-- Кнопка изменения прав -->
+                            @if($user->id !== Auth::id())
+                            <form action="{{ route('users.setAdmin', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="is_admin" value="{{ $user->is_admin ? 0 : 1 }}">
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    {{ $user->is_admin ? 'Забрать права' : 'Сделать админом' }}
+                                </button>
+                            </form>
+                            @endif
+                            
+                            <!-- Кнопка удаления -->
+                            <form action="{{ route('users.delete', $user->id) }}" method="POST" 
+                                  onsubmit="return confirm('Вы уверены?')" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
             

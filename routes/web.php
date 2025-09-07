@@ -19,4 +19,5 @@ Route::prefix('authorization')->group(function(){
  Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function(){
         Route::get('/info', [AdminController::class, 'info'])->name('info');
         Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('users.delete');
+        Route::patch('/users/{id}/setAdmin', [AdminController::class, 'setAdmin'])->name('users.setAdmin');
  });

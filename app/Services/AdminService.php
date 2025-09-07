@@ -16,7 +16,7 @@ class AdminService{
                 return [
                     'success'    => false,
                     'message'   => 'Вы не можете удалить свой собственный аккаунт',
-                    'redirect'  => '/'
+                    'redirect'  => 'admin/info'
                 ];
             }
             $user->delete();
@@ -24,20 +24,49 @@ class AdminService{
             return [
                 'success'    => true,
                 'message'   => 'Пользователь успешно удалён',
-                'redirect'  => '/'
+                'redirect'  => 'admin/info'
             ];
         }
         catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return [
-                'success'    => true,
+                'success'    => false,
                 'message'   => 'Пользователь не найден',
-                'redirect'  => '/'
+                'redirect'  => 'admin/info'
             ];
         } catch (\Exception $e) {
             return [
-                'success'    => true,
-                'message'   => "Произошла ошибка при удалении - $e->getMessage()",
-                'redirect'  => '/'
+                'success'    => false,
+                'message'   => "Произошла ошибка при удалении - " . $e->getMessage(),
+                'redirect'  => 'admin/info'
+            ];
+        }
+    }
+
+    public function setAdmin ($is_admin, $id){
+        try{
+            $user = User::findOrFail($id);
+
+            if($user->id === Auth::id()){
+                return [
+                    'success' => false,
+                    'message' => 'Вы не можете лишить самого себя прав администратора',
+                    'redirect'=> 'admin/info'
+                ];
+            }
+            $user->update(['is_admin' => $is_admin]);
+
+            return [
+                'success'   => true,
+                'message'   => 'Права администратора успешно сменились',
+                'redirect'  => 'admin/info'
+            ];
+        }
+
+        catch (\Exception $e){
+            return [
+                'success'   => false,
+                'message'   => "Произошла ошибка - " . $e->getMessage(),
+                'redirect'  => 'admin/info'
             ];
         }
     }
