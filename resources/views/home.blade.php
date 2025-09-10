@@ -1,168 +1,273 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .navbar-custom {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #007bff;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <!-- Верхняя панель с меню пользователя -->
-    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">ВПР</a>
-            
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">О нас</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Контакты</a>
-                    </li>
-                </ul>
-                <!-- Уведомления -->
-        @if(session('success'))
-            <div class="container mt-3">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@extends('layouts.layout')
+@section('content')
+<div class="container py-4">
+    <div class="row">
+        <!-- Сайдбар -->
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4 py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-bars me-2"></i>Меню пользователя</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-user-circle me-3 text-primary"></i>
+                                <span class="fw-medium">Профиль</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-cog me-3 text-warning"></i>
+                                <span class="fw-medium">Настройки</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-envelope me-3 text-info"></i>
+                                <span class="fw-medium">Сообщения</span>
+                                <span class="badge bg-danger ms-auto">3</span>
+                            </a>
+                        </li>
+                        @admin
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="/admin/info" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-shield-alt me-3 text-success"></i>
+                                <span class="fw-medium">Панель управления</span>
+                                <span class="badge bg-success ms-auto">ADMIN</span>
+                            </a>
+                        </li>
+                        @endadmin
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-credit-card me-3 text-purple"></i>
+                                <span class="fw-medium">Мои карты</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 py-3 hover-item">
+                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                                <i class="fas fa-history me-3 text-secondary"></i>
+                                <span class="fw-medium">История операций</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        @endif
 
-        @if(session('error'))
-            <div class="container mt-3">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <!-- Блок с балансом -->
+            @auth
+            <div class="card shadow-lg border-0 rounded-4 mt-4 bg-gradient-blue">
+                <div class="card-body text-center text-white">
+                    <i class="fas fa-wallet fa-3x mb-3"></i>
+                    <h4 class="fw-bold">Баланс</h4>
+                    <h2 class="display-5 fw-bold">{{ Auth::user()->cash ?? 0 }} ₽</h2>
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-light btn-sm rounded-pill">
+                            <i class="fas fa-plus me-1"></i>Пополнить
+                        </button>
+                    </div>
                 </div>
             </div>
-        @endif
-                <div class="user-menu">
-                    @auth
-                        <!-- Пользователь авторизован -->
-                        <div class="d-flex align-items-center">
-                            <div class="user-avatar me-2">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
-                            <span class="me-3">Привет, {{ Auth::user()->name }}!</span>
-                        </div>
-                        
-                        <form action="/authorization/logout" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                Выйти
-                            </button>
-                        </form>
-                    @else
-                        <!-- Пользователь не авторизован -->
-                        <a href="/authorization" class="btn btn-outline-primary btn-sm me-2">
-                            Авторизоваться
-                        </a>
-                        <a href="/authorization" class="btn btn-primary btn-sm">
-                            Зарегистрироваться
-                        </a>
-                    @endauth
-                </div>
-            </div>
+            @endauth
         </div>
-    </nav>
 
-    <!-- Основной контент -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-3">
-                <!-- Сайдбар -->
-                <div class="card">
-                    <div class="card-header">
-                        Меню
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <!-- Приветствие -->
+            @auth
+            <div class="card shadow-lg border-0 rounded-4 mb-4">
+                <div class="card-header bg-gradient-primary text-white rounded-top-4 py-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 fw-bold">
+                            <i class="fas fa-hand-wave me-2"></i>Добро пожаловать, {{ Auth::user()->name }}!
+                        </h4>
+                        <span class="badge bg-light text-primary fs-6">
+                            <i class="fas fa-star me-1"></i>Премиум клиент
+                        </span>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="" class="text-decoration-none">Профиль</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="" class="text-decoration-none">Настройки</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="" class="text-decoration-none">Сообщения</a>
-                            </li>
-                            @admin
-                                <li class="list-group-item">
-                                    <a href="/admin/info" class="text-decoration-none">Панель управления</a>
-                                </li>
-                            @endadmin
-                        </ul>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-card">
+                                <i class="fas fa-envelope text-primary"></i>
+                                <div>
+                                    <small>Email</small>
+                                    <p class="mb-0 fw-bold">{{ Auth::user()->email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card">
+                                <i class="fas fa-calendar-alt text-success"></i>
+                                <div>
+                                    <small>Дата регистрации</small>
+                                    <p class="mb-0 fw-bold">{{ Auth::user()->created_at->format('d.m.Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-md-9">
-                <!-- Основной контент -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Добро пожаловать на главную страницу!</h2>
+            @else
+            <div class="card shadow-lg border-0 rounded-4 mb-4">
+                <div class="card-header bg-gradient-info text-white rounded-top-4 py-4">
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-door-open me-2"></i>Добро пожаловать, гость!</h4>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                    <h5 class="text-muted mb-3">Для доступа ко всем функциям</h5>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="/authorization" class="btn btn-primary btn-lg rounded-pill me-md-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Войти
+                        </a>
+                        <a href="/authorization" class="btn btn-outline-primary btn-lg rounded-pill">
+                            <i class="fas fa-user-plus me-2"></i>Регистрация
+                        </a>
                     </div>
-                    <div class="card-body">
-                        @auth
-                            <div class="alert alert-success">
-                                <h4>Вы авторизованы!</h4>
-                                <p>Email: {{ Auth::user()->email }}</p>
-                                <p>Имя пользователя: {{ Auth::user()->name }}</p>
-                                <p>Дата регистрации: {{ Auth::user()->created_at->format('d.m.Y') }}</p>
+                </div>
+            </div>
+            @endauth
+
+            <!-- Лента новостей -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient-dark text-white rounded-top-4 py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-newspaper me-2"></i>Новости ВПР Банка</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Новость 1 -->
+                    <div class="news-item mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-start">
+                            <div class="news-icon me-3">
+                                <i class="fas fa-shield-alt fa-2x text-success"></i>
                             </div>
-                        @else
-                            <div class="alert alert-info">
-                                <h4>Добро пожаловать, гость!</h4>
-                                <p>Для доступа ко всем функциям сайта, пожалуйста, 
-                                   <a href="/authorization">авторизуйтесь</a> или 
-                                   <a href="/authorization">зарегистрируйтесь</a>.
-                                </p>
+                            <div class="flex-grow-1">
+                                <h6 class="text-primary mb-1">Обновление безопасности</h6>
+                                <p class="text-muted small mb-2">15 декабря 2024 • <span class="badge bg-success">Важно</span></p>
+                                <p class="mb-2">Внедрена новая система двухфакторной аутентификации для повышенной защиты ваших счетов.</p>
+                                <a href="#" class="text-decoration-none small">Подробнее →</a>
                             </div>
-                        @endauth
-                        
-                        <h3>Контент главной страницы</h3>
-                        <p>Здесь может быть любой контент вашего сайта...</p>
+                        </div>
+                    </div>
+
+                    <!-- Новость 2 -->
+                    <div class="news-item mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-start">
+                            <div class="news-icon me-3">
+                                <i class="fas fa-percentage fa-2x text-warning"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="text-primary mb-1">Повышение ставок по вкладам</h6>
+                                <p class="text-muted small mb-2">10 декабря 2024 • <span class="badge bg-info">Финансы</span></p>
+                                <p class="mb-2">С 1 января 2025 года повышаются процентные ставки по всем депозитным программам.</p>
+                                <a href="#" class="text-decoration-none small">Подробнее →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Новость 3 -->
+                    <div class="news-item mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-start">
+                            <div class="news-icon me-3">
+                                <i class="fas fa-mobile-alt fa-2x text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="text-primary mb-1">Новое мобильное приложение</h6>
+                                <p class="text-muted small mb-2">5 декабря 2024 • <span class="badge bg-primary">Технологии</span></p>
+                                <p class="mb-2">Вышло обновленное приложение ВПР Банка с улучшенным интерфейсом и новыми функциями.</p>
+                                <a href="#" class="text-decoration-none small">Подробнее →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Новость 4 -->
+                    <div class="news-item">
+                        <div class="d-flex align-items-start">
+                            <div class="news-icon me-3">
+                                <i class="fas fa-gift fa-2x text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="text-primary mb-1">Сезонные акции</h6>
+                                <p class="text-muted small mb-2">1 декабря 2024 • <span class="badge bg-danger">Акция</span></p>
+                                <p class="mb-2">Специальные новогодние предложения для клиентов ВПР Банка. Получите кэшбэк до 10%.</p>
+                                <a href="#" class="text-decoration-none small">Подробнее →</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Футер -->
-    <footer class="bg-light text-center text-lg-start mt-5">
-        <div class="text-center p-3">
-            © 2024 ВПР. Все права защищены.
-        </div>
-    </footer>
+<style>
+.hover-item {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+.hover-item:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 3px solid #007bff;
+    transform: translateX(5px);
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(135deg, #343a40 0%, #23272b 100%);
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.news-item {
+    transition: all 0.3s ease;
+}
+
+.news-item:hover {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: -1rem;
+}
+
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+.rounded-top-4 {
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+}
+</style>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+@endsection

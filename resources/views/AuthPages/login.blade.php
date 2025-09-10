@@ -1,260 +1,377 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация/Регистрация</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>ВПР Банк - Авторизация</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .auth-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .auth-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .nav-tabs {
+            border: none;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 0;
+        }
+        
+        .nav-link {
+            border: none !important;
+            padding: 20px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white !important;
+        }
+        
+        .nav-link:hover {
+            color: #007bff;
+        }
+        
+        .tab-content {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .input-group-text {
+            background: transparent;
+            border: 2px solid #e9ecef;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+        }
+        
+        .btn-auth {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .forgot-link {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-link:hover {
+            color: #007bff;
+        }
+        
+        .back-btn {
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            color: #007bff;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: #007bff;
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 20px;
+            }
+            
+            .nav-link {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Кнопка назад -->
+                <a href="/" class="back-btn">
+                    <i class="fas fa-arrow-left me-2"></i>Вернуться на главную
+                </a>
 
-<style>
-a:hover,a:focus{
- outline: none;
- text-decoration: none;
-}
-body {
- background-color: #1a1a1a; /* Тёмно-серый */
- color: #ffffff; /* Белый текст */
- min-height: 100vh;
- margin: 0;
- padding: 20px 0;
-.tab{
- background: #200122;
- background: -webkit-linear-gradient(to bottom, #6f0000, #200122);
- background: linear-gradient(to bottom, #6f0000, #200122);
- padding: 40px 50px;
- position: relative;
-}
-.tab:before{
- content: "";
- width: 100%;
- height: 100%;
- display: block;
- position: absolute;
- top: 0;
- left: 0;
- background: linear-gradient(#2e3a6a,#2f0b45);
- opacity: 0.85;
-}
-.tab .nav-tabs{
- border-bottom: none;
- padding: 0 20px;
- position: relative;
-}
-.tab .nav-tabs li{ margin: 0 30px 0 0; }
-.tab .nav-tabs li a{
- font-size: 18px;
- color: #fff;
- border-radius: 0;
- text-transform: uppercase;
- background: transparent;
- padding: 0;
- margin-right: 0;
- border: none;
- border-bottom: 2px solid transparent;
- opacity: 0.5;
- position: relative;
- transition: all 0.5s ease 0s;
-}
-.tab .nav-tabs li a:hover{ background: transparent; }
-.tab .nav-tabs li.active a,
-.tab .nav-tabs li.active a:focus,
-.tab .nav-tabs li.active a:hover{
- border: none;
- background: transparent;
- opacity: 1;
- border-bottom: 2px solid #eec111;
- color: #fff;
-}
-.tab .tab-content{
- padding: 20px 0 0 0;
- margin-top: 40px;
- background: transparent;
- z-index: 1;
- position: relative;
-}
-.form-bg{ background: #ddd; }
-.form-horizontal .form-group{
- margin: 0 0 15px 0;
- position: relative;
-}
-.form-horizontal .form-control{
- height: 40px;
- background: rgba(255,255,255,0.2);
- border: none;
- border-radius: 20px;
- box-shadow: none;
- padding: 0 20px;
- font-size: 14px;
- font-weight: bold;
- color: #fff;
- transition: all 0.3s ease 0s;
-}
-.form-horizontal .form-control:focus{
- box-shadow: none;
- outline: 0 none;
-}
-.form-horizontal .form-group label{
- padding: 0 20px;
- color: #7f8291;
- text-transform: capitalize;
- margin-bottom: 10px;
-}
-.form-horizontal .main-checkbox{
- width: 20px;
- height: 20px;
- background: #eec111;
- float: left;
- margin: 5px 0 0 20px;
- border: 1px solid #eec111;
- position: relative;
-}
-.form-horizontal .main-checkbox label{
- width: 20px;
- height: 20px;
- position: absolute;
- top: 0;
- left: 0;
- cursor: pointer;
-}
-.form-horizontal .main-checkbox label:after{
- content: "";
- width: 10px;
- height: 5px;
- position: absolute;
- top: 5px;
- left: 4px;
- border: 3px solid #fff;
- border-top: none;
- border-right: none;
- background: transparent;
- opacity: 0;
- -webkit-transform: rotate(-45deg);
- transform: rotate(-45deg);
-}
-.form-horizontal .main-checkbox input[type=checkbox]{ visibility: hidden; }
-.form-horizontal .main-checkbox input[type=checkbox]:checked + label:after{ opacity: 1; }
-.form-horizontal .text{
- float: left;
- font-size: 14px;
- font-weight: bold;
- color: #fff;
- margin-left: 7px;
- line-height: 20px;
- padding-top: 5px;
- text-transform: capitalize;
-}
-.form-horizontal .btn{
- width: 100%;
- background: #eec111;
- padding: 10px 20px;
- border: none;
- font-size: 14px;
- font-weight: bold;
- color: #fff;
- border-radius: 20px;
- text-transform: uppercase;
- margin: 20px 0 30px 0;
-}
-.form-horizontal .btn:focus{
- background: #eec111;
- color: #fff;
- outline: none;
- box-shadow: none;
-}
-.form-horizontal .forgot-pass{
- border-top: 1px solid #615f6c;
- margin: 0;
- text-align: center;
-}
-.form-horizontal .forgot-pass .btn{
- width: auto;
- background: transparent;
- margin: 30px 0 0 0;
- color: #615f6c;
- text-transform: capitalize;
- transition: all 0.3s ease 0s;
-}
-.form-horizontal .forgot-pass .btn:hover{ color: #eec111; }
-@media only screen and (max-width: 479px){
- .tab{ padding: 40px 20px; }
-}
-</style>
-<div class="container">
- <div class="row">
- <div class="col-md-offset-3 col-md-6">
- <div class="back-btn-container">
-                <a href="/" class="back-btn">← Вернуться на главную</a>
- </div>
- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+                <!-- Основной контейнер -->
+                <div class="auth-container">
+                    <!-- Шапка -->
+                    <div class="auth-header">
+                        <div class="auth-logo">
+                            <i class="fas fa-university me-2"></i>ВПР БАНК
+                        </div>
+                        <div class="auth-subtitle">
+                            Ваша финансовая безопасность — наш приоритет
+                        </div>
+                    </div>
+
+                    <!-- Табы -->
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#login">
+                                <i class="fas fa-sign-in-alt me-2"></i>Авторизация
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#register">
+                                <i class="fas fa-user-plus me-2"></i>Регистрация
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Контент табов -->
+                    <div class="tab-content">
+                        <!-- Сообщения об ошибках -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <strong>Ошибка!</strong> Пожалуйста, проверьте введенные данные.
+                                <ul class="mb-0 mt-2">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <!-- Авторизация -->
+                        <div class="tab-pane fade show active" id="login">
+                            <form method="POST" action="{{ url('authorization/auth') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label">Имя пользователя</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input type="text" name="name" class="form-control" 
+                                               value="{{ old('name') }}" 
+                                               placeholder="Введите ваше имя" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Пароль</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" name="password" class="form-control" 
+                                               placeholder="Введите ваш пароль" required>
+                                        <span class="input-group-text password-toggle">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="remember-forgot">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                                        <label class="form-check-label" for="remember">
+                                            Запомнить меня
+                                        </label>
+                                    </div>
+                                    <a href="#" class="forgot-link">Забыли пароль?</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-auth">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Войти в систему
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Регистрация -->
+                        <div class="tab-pane fade" id="register">
+                            <form method="POST" action="{{ url('authorization/register') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label">Имя пользователя</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input type="text" name="name" class="form-control" 
+                                               value="{{ old('name') }}" 
+                                               placeholder="Придумайте имя пользователя" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email адрес</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" name="email" class="form-control" 
+                                               value="{{ old('email') }}" 
+                                               placeholder="Введите ваш email" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Пароль</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" name="password" class="form-control" 
+                                               placeholder="Придумайте надежный пароль" required>
+                                        <span class="input-group-text password-toggle">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Подтверждение пароля</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" name="password_confirmation" class="form-control" 
+                                               placeholder="Повторите пароль" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-auth">
+                                    <i class="fas fa-user-plus me-2"></i>Создать аккаунт
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-@endif
- <div class="tab" role="tabpanel">
- <!-- Nav tabs -->
- <ul class="nav nav-tabs" role="tablist">
- <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Авторизоваться</a></li>
- <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Регистрация</a></li>
- </ul>
- <!-- Tab panes -->
- <div class="tab-content tabs">
- <div role="tabpanel" class="tab-pane fade in active" id="Section1">
- <form class="form-horizontal" method="POST" action="authorization/auth">
- @csrf
- <div class="form-group">
- <label for="exampleInputEmail1">Имя пользователя</label>
- <input type="name" name="name" class="form-control" id="exampleInputEmail1" value="{{old('name')}}">
- </div>
- <div class="form-group">
- <label for="exampleInputPassword1">Пароль</label>
- <input type="password" name="password" class="form-control" id="exampleInputPassword1">
- </div>
- <div class="form-group">
- <div class="main-checkbox">
- <input value="None" id="checkbox1" name="check" type="checkbox">
- <label for="checkbox1"></label>
- </div>
- <span class="text">Оставаться в сети</span>
- </div>
- <div class="form-group">
- <button type="submit" class="btn btn-default">Авторизоваться</button>
- </div>
- <div class="form-group forgot-pass">
- <button type="submit" class="btn btn-default">Забыл пароль</button>
- </div>
- </form>
- </div>
- <div role="tabpanel" class="tab-pane fade" id="Section2">
- <form class="form-horizontal" method="POST" action="authorization/register">
- @csrf
- <div class="form-group">
- <label for="exampleInputEmail1">Имя пользователя</label>
- <input type="text" name="name" class="form-control" id="exampleInputEmail1" value="{{old('name')}}">
- </div>
- <div class="form-group">
- <label for="exampleInputEmail1">Адрес электронной почты</label>
- <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{old('email')}}">
- </div>
- <div class="form-group">
- <label for="exampleInputPassword1">Пароль</label>
- <input type="password" name="password" class="form-control" id="exampleInputPassword1">
- </div>
- <div class="form-group">
- <button type="submit" class="btn btn-default">Зарегестрироваться</button>
- </div>
- </form>
- </div>
- </div>
- </div>
 
-</div><!-- /.col-md-offset-3 col-md-6 -->
-</div><!-- /.row -->
-</div><!-- /.container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Переключение видимости пароля
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.closest('.input-group').querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // Автопереключение на регистрацию при ошибках
+        @if($errors->any() && old('_token') && !old('name') && !old('email'))
+            const registerTab = new bootstrap.Tab(document.querySelector('a[href="#register"]'));
+            registerTab.show();
+        @endif
+    </script>
 </body>
 </html>

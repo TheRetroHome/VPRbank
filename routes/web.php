@@ -9,6 +9,8 @@ use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('aboutUs', [HomeController::class, 'aboutUs'])->name('aboutUs');
+Route::get('contacts', [HomeController::class, 'contacts'])->name('contacts');
 
 Route::prefix('authorization')->group(function(){
         Route::get('/', [AuthController::class, 'getAuth'])->middleware(GuestMiddleware::class)->name('getAuth');

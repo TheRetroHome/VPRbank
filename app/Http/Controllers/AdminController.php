@@ -15,7 +15,7 @@ class AdminController extends Controller
         $this->adminService = $adminService;
     }
     /**
-     * Scope userSelect selects id, name, emails, password, created_at
+     * Scope userSelect selects id, name, emails, password, created_at, is_admin
      */
     public function info(){
         $users = User::userSelect()->get();
