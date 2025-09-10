@@ -241,7 +241,7 @@
 
                         <!-- Авторизация -->
                         <div class="tab-pane fade show active" id="login">
-                            <form method="POST" action="{{ url('authorization/auth') }}">
+                            <form method="POST" action="authorization/auth">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label">Имя пользователя</label>
@@ -287,7 +287,7 @@
 
                         <!-- Регистрация -->
                         <div class="tab-pane fade" id="register">
-                            <form method="POST" action="{{ url('authorization/register') }}">
+                            <form method="POST" action="authorization/register">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label">Имя пользователя</label>

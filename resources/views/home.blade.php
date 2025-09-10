@@ -62,9 +62,11 @@
                     <h4 class="fw-bold">Баланс</h4>
                     <h2 class="display-5 fw-bold">{{ Auth::user()->cash ?? 0 }} ₽</h2>
                     <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-light btn-sm rounded-pill">
-                            <i class="fas fa-plus me-1"></i>Пополнить
-                        </button>
+                        <div class="d-grid gap-2 mt-3">
+                            <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
+                                <i class="fas fa-plus me-1"></i>Пополнить
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

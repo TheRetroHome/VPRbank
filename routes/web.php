@@ -7,6 +7,8 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MoneyController;
+
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('aboutUs', [HomeController::class, 'aboutUs'])->name('aboutUs');
@@ -23,3 +25,6 @@ Route::prefix('authorization')->group(function(){
         Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('users.delete');
         Route::patch('/users/{id}/setAdmin', [AdminController::class, 'setAdmin'])->name('users.setAdmin');
  });
+Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
+       Route::get('/money', [MoneyController::class, 'moneyStatic'])->name('money.static');
+});

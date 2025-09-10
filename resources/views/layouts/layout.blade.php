@@ -173,22 +173,22 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="/">
                             <i class="fas fa-home me-1"></i>Главная
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('aboutUs') ? 'active' : '' }}" href="{{ url('/aboutUs') }}">
+                        <a class="nav-link {{ request()->is('aboutUs') ? 'active' : '' }}" href="/aboutUs">
                             <i class="fas fa-info-circle me-1"></i>О нас
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}" href="{{ url('/contacts') }}">
+                        <a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}" href="/contacts">
                             <i class="fas fa-phone me-1"></i>Контакты
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('services') ? 'active' : '' }}" href="{{ url('/services') }}">
+                        <a class="nav-link {{ request()->is('services') ? 'active' : '' }}" href="/services">
                             <i class="fas fa-credit-card me-1"></i>Услуги
                         </a>
                     </li>
