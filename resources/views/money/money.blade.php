@@ -28,9 +28,8 @@
                     </div>
 
                     <!-- Форма пополнения -->
-                    <form action="" method="POST">
+                    <form action="/money/addMoney" method="POST">
                         @csrf
-                        
                         <!-- Сумма пополнения -->
                         <div class="mb-4">
                             <label for="amount" class="form-label fw-bold text-dark">

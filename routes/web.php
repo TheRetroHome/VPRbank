@@ -27,4 +27,6 @@ Route::prefix('authorization')->group(function(){
  });
 Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/money', [MoneyController::class, 'moneyStatic'])->name('money.static');
+       Route::get('/moneyHistory', [MoneyController::class, 'moneyHistory'])->name('money.history');
+       Route::post('/addMoney', [MoneyController::class, 'addMoney'])->name('money.addMoney');
 });

@@ -45,7 +45,7 @@
                             </a>
                         </li>
                         <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                            <a href="/money/moneyHistory" class="text-decoration-none text-dark d-flex align-items-center">
                                 <i class="fas fa-history me-3 text-secondary"></i>
                                 <span class="fw-medium">История операций</span>
                             </a>

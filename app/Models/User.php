@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -50,7 +51,32 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get all of the transactions for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function deposit($amount, $description = "Пополнение баланса"){
+        $this->cash += $amount;
+        $this->save();
+        
+        // Исправлено: transactions() вместо transaction()
+        $this->transactions()->create([
+            'type' => 'deposit',
+            'amount' => $amount,
+            'description' => $description,
+            'status' => 'completed'
+        ]);
+        
+        return $this;
+    }
+
     public function scopeUserSelect($query){
-        return $query->select('id', 'name', 'email', 'password', 'created_at', 'is_admin');
+        return $query->select('id', 'name', 'email', 'password', 'created_at', 'cash', 'is_admin');
     }
 }
