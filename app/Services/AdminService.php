@@ -53,7 +53,8 @@ class AdminService{
                     'redirect'=> 'admin/info'
                 ];
             }
-            $user->update(['is_admin' => $is_admin]);
+            $role = $user->role == 'Администратор' ? 'Клиент' : 'Администратор';
+            $user->update(['is_admin' => $is_admin, 'role'  => $role]);
 
             return [
                 'success'   => true,

@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             'name'      => ['required', 'string', 'unique:users', 'max:50', 'min:5'],
             'email'     => ['required', 'email', 'unique:users'],
-            'password'  => ['required', 'max:50', 'min:8'],
+            'password'  => ['required', 'max:50', 'min:8', 'confirmed'],
         ];
     }
 
@@ -44,6 +44,7 @@ class RegisterRequest extends FormRequest
             'password.required'  => 'Пароль обязателен для заполнения',
             'password.max'       => 'Превышен лимит символов в пароле',
             'password.min'       => 'Недостаточно символов в пароле',
+            'password.confirmed' => 'Пароли не совпадают',
         ];
     }
 }

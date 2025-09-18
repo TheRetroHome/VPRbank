@@ -23,7 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
-        'cash'
+        'cash',
+        'role',
+        'status'
     ];
 
     /**
@@ -77,6 +79,6 @@ class User extends Authenticatable
     }
 
     public function scopeUserSelect($query){
-        return $query->select('id', 'name', 'email', 'password', 'created_at', 'cash', 'is_admin');
+        return $query->select('id', 'name', 'email', 'password', 'created_at', 'cash', 'is_admin', 'status', 'role');
     }
 }

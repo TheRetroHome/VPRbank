@@ -84,7 +84,7 @@
                             <i class="fas fa-hand-wave me-2"></i>Добро пожаловать, {{ Auth::user()->name }}!
                         </h4>
                         <span class="badge bg-light text-primary fs-6">
-                            <i class="fas fa-star me-1"></i>Премиум клиент
+                            <i class="fas fa-star me-1"></i>{{ Auth::user()->role }}
                         </span>
                     </div>
                 </div>

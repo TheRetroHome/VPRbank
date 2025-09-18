@@ -30,3 +30,7 @@ Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/moneyHistory', [MoneyController::class, 'moneyHistory'])->name('money.history');
        Route::post('/addMoney', [MoneyController::class, 'addMoney'])->name('money.addMoney');
 });
+
+Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
+       
+});
