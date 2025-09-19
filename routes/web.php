@@ -8,6 +8,7 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MoneyController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
@@ -32,5 +33,5 @@ Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
 });
 
 Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
-       
+       Route::get('/profile', [UserController::class, 'getProfile'])->name('user.profile');
 });

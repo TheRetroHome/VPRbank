@@ -11,7 +11,7 @@
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                            <a href="users/profile" class="text-decoration-none text-dark d-flex align-items-center">
                                 <i class="fas fa-user-circle me-3 text-primary"></i>
                                 <span class="fw-medium">Профиль</span>
                             </a>
