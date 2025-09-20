@@ -35,7 +35,8 @@ Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/profile', [UserController::class, 'getProfile'])->name('user.profile');
 });
 Route::prefix('posts')->middleware(AdminMiddleware::class)->group(function(){
+       Route::get('/test', [PostController::class, 'index'])->name('posts.index');
        Route::get('/create', [PostController::class, 'create'])->name('posts.create');
        Route::post('/store', [PostController::class, 'store'])->name('posts.store');
-       Route::get('/test', [PostController::class, 'index'])->name('posts.index');
+       Route::get('/{id}', [PostController::class, 'show'])->name('posts.show');
 });

@@ -74,7 +74,7 @@
 
                         <!-- Кнопки действия -->
                         <div class="d-grid gap-3 d-md-flex justify-content-md-end mt-5">
-                            <a href="" class="btn btn-outline-secondary btn-lg">
+                            <a href="/" class="btn btn-outline-secondary btn-lg">
                                 <i class="fas fa-times me-2"></i>Отмена
                             </a>
                             <button type="submit" class="btn btn-primary btn-lg px-5">

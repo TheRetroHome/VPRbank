@@ -12,9 +12,9 @@ class Post extends Model
         'is_active'
     ];
 
-    // protected function casts() : boolean {
-    //     return [
-    //         'is_active' => 'boolean',
-    //     ];
-    // }
+    protected function casts() : array {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 }

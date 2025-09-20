@@ -94,7 +94,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $user->role }}</td>
-                                    <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
+                                    <td>{{ $user->created_at->format('d.m.Y') }}</td>
                                     <td>
                                         <div class="action-buttons">
                                             @if($user->id !== Auth::id())
