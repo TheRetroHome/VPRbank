@@ -19,6 +19,7 @@ class AdminCreateSeeder extends Seeder
             'email' => 'superadmin@mail.ru',
             'is_admin'  => true,
             'password'  => bcrypt('password'),
+            'role'  => 'Администратор',
             'created_at'=> now(),
             'updated_at'=> now(),
         ]);

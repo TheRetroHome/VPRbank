@@ -68,7 +68,6 @@ class User extends Authenticatable
         $this->cash += $amount;
         $this->save();
         
-        // Исправлено: transactions() вместо transaction()
         $this->transactions()->create([
             'type' => 'deposit',
             'amount' => $amount,
