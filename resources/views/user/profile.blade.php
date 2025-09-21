@@ -80,9 +80,9 @@
                             <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Редактирование профиля</h5>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{ route('user.update') }}" method="POST">
                                 @csrf
-                                @method('PUT')
+                                @method('PATCH')
 
                                 <div class="mb-4">
                                     <label for="name" class="form-label fw-bold">Имя пользователя</label>

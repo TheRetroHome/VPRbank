@@ -188,7 +188,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('services') ? 'active' : '' }}" href="/services">
+                        <a class="nav-link {{ request()->is('services') ? 'active' : '' }}" href="/service">
                             <i class="fas fa-credit-card me-1"></i>Услуги
                         </a>
                     </li>

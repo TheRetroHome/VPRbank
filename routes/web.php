@@ -14,6 +14,7 @@ use App\Http\Controllers\PostController;
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('aboutUs', [HomeController::class, 'aboutUs'])->name('aboutUs');
 Route::get('contacts', [HomeController::class, 'contacts'])->name('contacts');
+Route::get('service', [HomeController::class, 'service'])->name('service');
 
 Route::prefix('authorization')->group(function(){
         Route::get('/', [AuthController::class, 'getAuth'])->middleware(GuestMiddleware::class)->name('getAuth');
@@ -33,6 +34,7 @@ Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
 });
 Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/profile', [UserController::class, 'getProfile'])->name('user.profile');
+       Route::patch('/updateProfile', [UserController::class, 'update'])->name('user.update');
 });
 Route::prefix('posts')->middleware(AdminMiddleware::class)->group(function(){
        Route::get('/test', [PostController::class, 'index'])->name('posts.index');

@@ -17,4 +17,8 @@ class HomeController extends Controller
     public function contacts(){
         return view('static.contacts');
     }
+
+    public function service(){
+        return view('static.service');
+    }
 }
