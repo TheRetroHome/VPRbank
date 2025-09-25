@@ -39,7 +39,7 @@
                         </li>
                         <li class="list-group-item border-0 py-3 hover-item">
                             <a href="/posts/create" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-shield-alt me-3 text-success"></i>
+                                <i class="fas fa-edit me-3 text-success"></i>
                                 <span class="fw-medium">Создание постов</span>
                                 <span class="badge bg-success ms-auto">ADMIN</span>
                             </a>
@@ -69,11 +69,9 @@
                     <h4 class="fw-bold">Баланс</h4>
                     <h2 class="display-5 fw-bold">{{ Auth::user()->cash ?? 0 }} ₽</h2>
                     <div class="d-grid gap-2 mt-3">
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
-                                <i class="fas fa-plus me-1"></i>Пополнить
-                            </a>
-                        </div>
+                        <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
+                            <i class="fas fa-plus me-1"></i>Пополнить
+                        </a>
                     </div>
                 </div>
             </div>
@@ -144,64 +142,39 @@
                     <h5 class="mb-0 fw-bold"><i class="fas fa-newspaper me-2"></i>Новости ВПР Банка</h5>
                 </div>
                 <div class="card-body">
-                    <!-- Новость 1 -->
-                    <div class="news-item mb-4 pb-4 border-bottom">
-                        <div class="d-flex align-items-start">
-                            <div class="news-icon me-3">
-                                <i class="fas fa-shield-alt fa-2x text-success"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="text-primary mb-1">Обновление безопасности</h6>
-                                <p class="text-muted small mb-2">15 декабря 2024 • <span class="badge bg-success">Важно</span></p>
-                                <p class="mb-2">Внедрена новая система двухфакторной аутентификации для повышенной защиты ваших счетов.</p>
-                                <a href="#" class="text-decoration-none small">Подробнее →</a>
+                    @forelse($posts as $post)
+                        <div class="news-item mb-4 pb-4 border-bottom">
+                            <div class="d-flex align-items-start">
+                                <div class="news-icon me-3">
+                                    @if($post->tag)
+                                        <i class="fas fa-tag fa-2x text-primary"></i>
+                                    @else
+                                        <i class="fas fa-file-alt fa-2x text-muted"></i>
+                                    @endif
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="text-primary mb-1">{{ $post->title }}</h6>
+                                    <p class="text-muted small mb-2">
+                                        {{ $post->created_at->format('d.m.Y') }}
+                                        @if($post->tag)
+                                            <span class="badge bg-secondary">{{ $post->tag->name }}</span>
+                                        @endif
+                                    </p>
+                                    <p class="mb-2">{{ Str::limit($post->content, 80) }}</p>
+                                    <a href="{{ route('posts.show', $post->id) }}" class="text-decoration-none small">Подробнее →</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @empty
+                        <div class="text-center py-4">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Нет новостей для отображения.</p>
+                        </div>
+                    @endforelse
 
-                    <!-- Новость 2 -->
-                    <div class="news-item mb-4 pb-4 border-bottom">
-                        <div class="d-flex align-items-start">
-                            <div class="news-icon me-3">
-                                <i class="fas fa-percentage fa-2x text-warning"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="text-primary mb-1">Повышение ставок по вкладам</h6>
-                                <p class="text-muted small mb-2">10 декабря 2024 • <span class="badge bg-info">Финансы</span></p>
-                                <p class="mb-2">С 1 января 2025 года повышаются процентные ставки по всем депозитным программам.</p>
-                                <a href="#" class="text-decoration-none small">Подробнее →</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Новость 3 -->
-                    <div class="news-item mb-4 pb-4 border-bottom">
-                        <div class="d-flex align-items-start">
-                            <div class="news-icon me-3">
-                                <i class="fas fa-mobile-alt fa-2x text-primary"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="text-primary mb-1">Новое мобильное приложение</h6>
-                                <p class="text-muted small mb-2">5 декабря 2024 • <span class="badge bg-primary">Технологии</span></p>
-                                <p class="mb-2">Вышло обновленное приложение ВПР Банка с улучшенным интерфейсом и новыми функциями.</p>
-                                <a href="#" class="text-decoration-none small">Подробнее →</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Новость 4 -->
-                    <div class="news-item">
-                        <div class="d-flex align-items-start">
-                            <div class="news-icon me-3">
-                                <i class="fas fa-gift fa-2x text-danger"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="text-primary mb-1">Сезонные акции</h6>
-                                <p class="text-muted small mb-2">1 декабря 2024 • <span class="badge bg-danger">Акция</span></p>
-                                <p class="mb-2">Специальные новогодние предложения для клиентов ВПР Банка. Получите кэшбэк до 10%.</p>
-                                <a href="#" class="text-decoration-none small">Подробнее →</a>
-                            </div>
-                        </div>
+                    <!-- Пагинация -->
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $posts->links() }}
                     </div>
                 </div>
             </div>

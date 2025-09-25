@@ -55,6 +55,27 @@
                             @enderror
                             <div class="form-text">Минимальная длина - 100 символов. Будьте интересны!</div>
                         </div>
+                        
+                        <!-- Выбор тега -->
+                        <div class="mb-4">
+                            <label for="tag_id" class="form-label fw-bold">
+                                <i class="fas fa-tags me-2 text-primary"></i>Категория (тег)
+                            </label>
+                            <select class="form-select form-select-lg @error('tag_id') is-invalid @enderror" 
+                                    id="tag_id" 
+                                    name="tag_id">
+                                <option value="">— Выберите тег —</option>
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }}" {{ old('tag_id') == $tag->id ? 'selected' : '' }}>
+                                        {{ $tag->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tag_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">Тег поможет пользователям быстрее найти ваш пост</div>
+                        </div>
 
                         <!-- Переключатель активности -->
                         <div class="mb-4">

@@ -25,6 +25,7 @@ class CreatePostRequest extends FormRequest
             'title'         => ['required', 'string', 'min:10', 'max:70'],
             'content'       => ['required', 'string', 'min:100'],
             'is_active'     => ['required', 'boolean'],
+            'tag_id'        => ['required', 'exists:tags,id']
         ];
     }
 
