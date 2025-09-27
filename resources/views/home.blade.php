@@ -2,7 +2,8 @@
 @section('content')
 <div class="container py-4">
     <div class="row">
-        <!-- Сайдбар -->
+        @auth
+        <!-- Сайдбар для авторизованных -->
         <div class="col-md-3">
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-header bg-primary text-white rounded-top-4 py-3">
@@ -62,7 +63,6 @@
             </div>
 
             <!-- Блок с балансом -->
-            @auth
             <div class="card shadow-lg border-0 rounded-4 mt-4 bg-gradient-blue">
                 <div class="card-body text-center text-white">
                     <i class="fas fa-wallet fa-3x mb-3"></i>
@@ -75,11 +75,11 @@
                     </div>
                 </div>
             </div>
-            @endauth
         </div>
+        @endauth
 
         <!-- Основной контент -->
-        <div class="col-md-9">
+        <div class="@auth col-md-9 @else col-12 @endauth">
             <!-- Приветствие -->
             @auth
             <div class="card shadow-lg border-0 rounded-4 mb-4">
@@ -100,7 +100,7 @@
                                 <i class="fas fa-envelope text-primary"></i>
                                 <div>
                                     <small>Email</small>
-                                    <p class="mb-0 fw-bold">{{ Auth::user()->email }}</p>
+                                    <p class="mb-0 fw-bold text-break">{{ Auth::user()->email }}</p>
                                 </div>
                             </div>
                         </div>
@@ -139,43 +139,82 @@
             <!-- Лента новостей -->
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-header bg-gradient-dark text-white rounded-top-4 py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-newspaper me-2"></i>Новости ВПР Банка</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-newspaper me-2"></i>Новости ВПР Банка
+                        </h5>
+                        <a href="{{ route('posts.index') }}" class="btn btn-outline-light btn-sm rounded-pill">
+                            <i class="fas fa-list me-1"></i>Все посты
+                            <span class="badge bg-light text-dark ms-1">{{ $posts->total() }}</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
-                    @forelse($posts as $post)
-                        <div class="news-item mb-4 pb-4 border-bottom">
+                    @forelse($posts->take(3) as $post)
+                        <div class="news-item mb-4 pb-4 border-bottom position-relative">
+                            <!-- Бейдж тега -->
+                            @if($post->tag)
+                            <div class="position-absolute top-0 end-0">
+                                <span class="badge {{ $post->tag->badge_class ?? 'bg-primary' }} rounded-pill">
+                                    @if($post->tag->icon_class)
+                                    <i class="{{ $post->tag->icon_class }} me-1"></i>
+                                    @endif
+                                    {{ $post->tag->name }}
+                                </span>
+                            </div>
+                            @endif
+
                             <div class="d-flex align-items-start">
                                 <div class="news-icon me-3">
                                     @if($post->tag)
-                                        <i class="fas fa-tag fa-2x text-primary"></i>
+                                        <i class="fas fa-tag fa-2x {{ $post->tag->badge_class ? 'text-' . str_replace('bg-', '', $post->tag->badge_class) : 'text-primary' }}"></i>
                                     @else
                                         <i class="fas fa-file-alt fa-2x text-muted"></i>
                                     @endif
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="text-primary mb-1">{{ $post->title }}</h6>
+                                <div class="flex-grow-1 min-width-0"> 
+                                    <div class="d-flex align-items-start justify-content-between mb-2 flex-wrap"> 
+                                        <h6 class="text-primary mb-0 fw-bold text-break pe-2">{{ $post->title }}</h6> 
+                                    </div>
                                     <p class="text-muted small mb-2">
-                                        {{ $post->created_at->format('d.m.Y') }}
-                                        @if($post->tag)
-                                            <span class="badge bg-secondary">{{ $post->tag->name }}</span>
-                                        @endif
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ $post->created_at->format('d.m.Y H:i') }}
                                     </p>
-                                    <p class="mb-2">{{ Str::limit($post->content, 80) }}</p>
-                                    <a href="{{ route('posts.show', $post->id) }}" class="text-decoration-none small">Подробнее →</a>
+                                    <p class="mb-2 text-dark text-break word-wrap">{{ Str::limit(strip_tags($post->content), 100) }}</p> 
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap"> 
+                                        <a href="{{ route('posts.show', $post->id) }}" class="text-decoration-none text-primary fw-medium mb-1"> 
+                                            <i class="fas fa-arrow-right me-1"></i>Читать полностью
+                                        </a>
+                                        <small class="text-muted flex-shrink-0"> 
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ $post->created_at->diffForHumans() }}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @empty
                         <div class="text-center py-4">
                             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">Нет новостей для отображения.</p>
+                            <h5 class="text-muted mb-2">Нет новостей для отображения</h5>
+                            <p class="text-muted">Следите за обновлениями, скоро здесь появятся новости</p>
+                            @admin
+                            <a href="/posts/create" class="btn btn-primary mt-2">
+                                <i class="fas fa-plus me-2"></i>Создать первую новость
+                            </a>
+                            @endadmin
                         </div>
                     @endforelse
 
-                    <!-- Пагинация -->
-                    <div class="d-flex justify-content-center mt-4">
-                        {{ $posts->links() }}
+                    <!-- Кнопка "Все посты" внизу для мобильных -->
+                    @if($posts->count() > 3)
+                    <div class="d-block d-md-none text-center mt-4">
+                        <a href="{{ route('posts.index') }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                            <i class="fas fa-list me-1"></i>Показать все посты
+                            <span class="badge bg-primary ms-1">{{ $posts->total() }}</span>
+                        </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -226,13 +265,24 @@
 
 .news-item {
     transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 12px;
 }
 
 .news-item:hover {
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transform: translateX(5px);
+}
+
+.news-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 123, 255, 0.1);
     border-radius: 12px;
-    padding: 1rem;
-    margin: -1rem;
 }
 
 .text-purple {
@@ -247,9 +297,85 @@
     border-top-left-radius: 1rem !important;
     border-top-right-radius: 1rem !important;
 }
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Решение проблемы с длинными словами */
+.min-width-0 {
+    min-width: 0;
+}
+
+.text-break {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.word-wrap {
+    word-wrap: break-word;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+/* Анимации */
+.news-item {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .news-item {
+        padding: 1rem;
+        margin: 0 -1rem;
+    }
+    
+    .news-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .news-icon i {
+        font-size: 1.5rem !important;
+    }
+    
+    .text-break {
+        word-break: break-all;
+    }
+}
+
+/* Центрирование для неавторизованных */
+.col-12 .card {
+    max-width: 100%;
+}
+
+/* Плавные переходы при авторизации */
+.card {
+    transition: all 0.3s ease;
+}
 </style>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+<script>
+// Анимация появления новостей
+document.addEventListener('DOMContentLoaded', function() {
+    const newsItems = document.querySelectorAll('.news-item');
+    newsItems.forEach((item, index) => {
+        item.style.animationDelay = `${index * 0.2}s`;
+    });
+});
+</script>
 @endsection

@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="fas fa-home me-1"></i>Главная</a></li>
-                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="fas fa-newspaper me-1"></i>Посты</a></li>
+                    <li class="breadcrumb-item"><a href="/posts/index" class="text-decoration-none"><i class="fas fa-newspaper me-1"></i>Посты</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Просмотр поста</li>
                 </ol>
             </nav>

@@ -12,8 +12,8 @@ use App\Http\Requests\Post\CreatePostRequest;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Post::all();
-        return view('posts.test', compact('posts'));
+        $posts = Post::with('tag')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
     public function show($id){
