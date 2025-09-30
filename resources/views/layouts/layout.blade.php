@@ -153,6 +153,35 @@
             padding: 2rem 0;
             margin-top: 3rem;
         }
+
+        /* Стили для сайдбара */
+        .hover-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .hover-item:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 3px solid #007bff;
+            transform: translateX(5px);
+        }
+
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .rounded-top-4 {
+            border-top-left-radius: 1rem !important;
+            border-top-right-radius: 1rem !important;
+        }
+
+        .text-purple {
+            color: #6f42c1 !important;
+        }
     </style>
 </head>
 <body>

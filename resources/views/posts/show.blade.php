@@ -20,10 +20,14 @@
                         <div class="flex-grow-1">
                             <h1 class="h2 mb-2">{{ $post->title }}</h1>
                             <div class="d-flex flex-wrap gap-3 align-items-center">
-                                <span class="badge bg-{{ $post->is_active ? 'success' : 'secondary' }} fs-6">
-                                    <i class="fas fa-{{ $post->is_active ? 'eye' : 'eye-slash' }} me-1"></i>
-                                    {{ $post->is_active ? 'Опубликовано' : 'Черновик' }}
+                                @if($post->tag)
+                                <span class="badge {{ $post->tag->badge_class ?? 'bg-primary' }} rounded-pill">
+                                    @if($post->tag->icon_class)
+                                    <i class="{{ $post->tag->icon_class }} me-1"></i>
+                                    @endif
+                                    {{ $post->tag->name }}
                                 </span>
+                                @endif  
                                 <span class="text-white-50"><i class="fas fa-calendar me-1"></i>{{ $post->created_at->format('d.m.Y H:i') }}</span>
                                 <span class="text-white-50"><i class="fas fa-clock me-1"></i>{{ $post->created_at->diffForHumans() }}</span>
                             </div>

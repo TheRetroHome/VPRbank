@@ -36,4 +36,8 @@ class MoneyController extends Controller
 
         return view('money.history', compact('transactions'));
     }
+
+    public function moneyExport(){
+        
+    }
 }

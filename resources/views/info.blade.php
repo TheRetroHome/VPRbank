@@ -64,7 +64,7 @@
                                     <th><i class="fas fa-user me-1"></i>Имя</th>
                                     <th><i class="fas fa-envelope me-1"></i>Email</th>
                                     <th><i class="fas fa-shield-alt me-1"></i>Права</th>
-                                    <th><i class="fas fa-shield-alt me-1"></i>Значение</th>
+                                    <th><i class="fas fa-shield-alt me-1"></i>Роль</th>
                                     <th><i class="fas fa-calendar me-1"></i>Дата регистрации</th>
                                     <th><i class="fas fa-cogs me-1"></i>Действия</th>
                                 </tr>

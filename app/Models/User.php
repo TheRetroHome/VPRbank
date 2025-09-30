@@ -64,6 +64,16 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
+    public function sentMessage(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function receivedMessage(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
     public function deposit($amount, $description = "Пополнение баланса"){
         $this->cash += $amount;
         $this->save();

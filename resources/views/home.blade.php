@@ -1,83 +1,11 @@
 @extends('layouts.layout')
+
 @section('content')
 <div class="container py-4">
     <div class="row">
-        @auth
-        <!-- Сайдбар для авторизованных -->
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white rounded-top-4 py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-bars me-2"></i>Меню пользователя</h5>
-                </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="users/profile" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-user-circle me-3 text-primary"></i>
-                                <span class="fw-medium">Профиль</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-cog me-3 text-warning"></i>
-                                <span class="fw-medium">Настройки</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-envelope me-3 text-info"></i>
-                                <span class="fw-medium">Сообщения</span>
-                                <span class="badge bg-danger ms-auto">3</span>
-                            </a>
-                        </li>
-                        @admin
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/admin/info" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-shield-alt me-3 text-success"></i>
-                                <span class="fw-medium">Панель управления</span>
-                                <span class="badge bg-success ms-auto">ADMIN</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/posts/create" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-edit me-3 text-success"></i>
-                                <span class="fw-medium">Создание постов</span>
-                                <span class="badge bg-success ms-auto">ADMIN</span>
-                            </a>
-                        </li>
-                        @endadmin
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-credit-card me-3 text-purple"></i>
-                                <span class="fw-medium">Мои карты</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/money/moneyHistory" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-history me-3 text-secondary"></i>
-                                <span class="fw-medium">История операций</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Блок с балансом -->
-            <div class="card shadow-lg border-0 rounded-4 mt-4 bg-gradient-blue">
-                <div class="card-body text-center text-white">
-                    <i class="fas fa-wallet fa-3x mb-3"></i>
-                    <h4 class="fw-bold">Баланс</h4>
-                    <h2 class="display-5 fw-bold">{{ Auth::user()->cash ?? 0 }} ₽</h2>
-                    <div class="d-grid gap-2 mt-3">
-                        <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
-                            <i class="fas fa-plus me-1"></i>Пополнить
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endauth
-
+        <!-- Автоматически подключаем сайдбар -->
+        @include('layouts.partials.sidebar')
+        
         <!-- Основной контент -->
         <div class="@auth col-md-9 @else col-12 @endauth">
             <!-- Приветствие -->
@@ -143,9 +71,8 @@
                         <h5 class="mb-0 fw-bold">
                             <i class="fas fa-newspaper me-2"></i>Новости ВПР Банка
                         </h5>
-                        <a href="{{ route('posts.index') }}" class="btn btn-outline-light btn-sm rounded-pill">
+                        <a href="posts/index" class="btn btn-outline-light btn-sm rounded-pill">
                             <i class="fas fa-list me-1"></i>Все посты
-                            <span class="badge bg-light text-dark ms-1">{{ $posts->total() }}</span>
                         </a>
                     </div>
                 </div>
@@ -198,11 +125,11 @@
                             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                             <h5 class="text-muted mb-2">Нет новостей для отображения</h5>
                             <p class="text-muted">Следите за обновлениями, скоро здесь появятся новости</p>
-                            @admin
+                            @if(Auth::check() && Auth::user()->is_admin)
                             <a href="/posts/create" class="btn btn-primary mt-2">
                                 <i class="fas fa-plus me-2"></i>Создать первую новость
                             </a>
-                            @endadmin
+                            @endif
                         </div>
                     @endforelse
 
@@ -301,6 +228,13 @@
 .btn-outline-light:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Решение проблемы с длинными словами */

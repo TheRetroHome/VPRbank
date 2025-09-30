@@ -3,84 +3,11 @@
 @section('content')
 <div class="container py-4">
     <div class="row">
-        <!-- Сайдбар -->
-        @auth
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white rounded-top-4 py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-bars me-2"></i>Меню пользователя</h5>
-                </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="users/profile" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-user-circle me-3 text-primary"></i>
-                                <span class="fw-medium">Профиль</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-cog me-3 text-warning"></i>
-                                <span class="fw-medium">Настройки</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-envelope me-3 text-info"></i>
-                                <span class="fw-medium">Сообщения</span>
-                                <span class="badge bg-danger ms-auto">3</span>
-                            </a>
-                        </li>
-                        @if(Auth::check() && Auth::user()->is_admin)
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/admin/info" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-shield-alt me-3 text-success"></i>
-                                <span class="fw-medium">Панель управления</span>
-                                <span class="badge bg-success ms-auto">ADMIN</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/posts/create" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-edit me-3 text-success"></i>
-                                <span class="fw-medium">Создание постов</span>
-                                <span class="badge bg-success ms-auto">ADMIN</span>
-                            </a>
-                        </li>
-                        @endif
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-credit-card me-3 text-purple"></i>
-                                <span class="fw-medium">Мои карты</span>
-                            </a>
-                        </li>
-                        <li class="list-group-item border-0 py-3 hover-item">
-                            <a href="/money/moneyHistory" class="text-decoration-none text-dark d-flex align-items-center">
-                                <i class="fas fa-history me-3 text-secondary"></i>
-                                <span class="fw-medium">История операций</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Блок с балансом -->
-            <div class="card shadow-lg border-0 rounded-4 mt-4 bg-gradient-blue">
-                <div class="card-body text-center text-white">
-                    <i class="fas fa-wallet fa-3x mb-3"></i>
-                    <h4 class="fw-bold">Баланс</h4>
-                    <h2 class="display-5 fw-bold">{{ Auth::user()->cash ?? 0 }} ₽</h2>
-                    <div class="d-grid gap-2 mt-3">
-                        <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
-                            <i class="fas fa-plus me-1"></i>Пополнить
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endauth
-        </div>
-
+        <!-- Автоматически подключаем сайдбар -->
+        @include('layouts.partials.sidebar')
+        
         <!-- Основной контент -->
-        <div class="col-md-9">
+        <div class="@auth col-md-9 @else col-12 @endauth">
             <!-- Заголовок и фильтры -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -123,7 +50,8 @@
                                     @endif
                                     {{ $post->tag->name }}
                                 </span>
-                                @endif      
+                                @endif
+
                             </div>
                             <h5 class="fw-bold text-dark mb-2 line-clamp-2">{{ $post->title }}</h5>
                         </div>
@@ -368,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Добавляем стиль для анимации
 const style = document.createElement('style');
-style.textContent = 
+style.textContent = `
     .fade-in {
         animation: fadeInUp 0.6s ease-out;
     }
@@ -383,7 +311,7 @@ style.textContent =
             transform: translateY(0);
         }
     }
-;
+`;
 document.head.appendChild(style);
 </script>
 @endsection
