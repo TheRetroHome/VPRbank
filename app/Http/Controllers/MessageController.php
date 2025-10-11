@@ -12,6 +12,8 @@ class MessageController extends Controller
     public function index(){
         $userId = Auth::id();
 
+        $users = User::where('id', '!=', Auth::id())->get();
+
         $messages = Message::where('sender_id', $userId)
         ->orWhere('recipient_id', $userId)
         ->with('sender', 'recipient')
@@ -23,16 +25,35 @@ class MessageController extends Controller
             return $group->sortByDesc('created_at')->first();
         })->values();
 
-        return view('messages.index', compact('conversations'));
+        return view('messages.index', compact('conversations', 'users'));
     }   
 
     public function create(){
-
+        $users = User::where('id', '!=', Auth::id())->get();
+        return view('messages.create', compact('users'));
     }
 
-    public function store(){
+    public function store(Request $request)
+{
+    $message = Message::create([
+        'sender_id'     => Auth::id(),
+        'recipient_id'  => $request->recipient_id,
+        'content'       => $request->content,
+        'is_read'       => false,
+    ]);
 
+    // Загружаем отношения для правильного отображения
+    $message->load('sender');
+
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
     }
+
+    return back();
+}
 
     public function show($userId){
         $currentUser = Auth::user();

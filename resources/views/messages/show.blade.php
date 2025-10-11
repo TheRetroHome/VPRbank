@@ -137,13 +137,19 @@
 
                 <!-- Форма отправки сообщения -->
                 <div class="card-footer border-0 bg-transparent">
-                    <form action="{{ route('messages.store') }}" method="POST" class="d-flex gap-2">
+                    <form id="messageForm" class="d-flex gap-2">
                         @csrf
                         <input type="hidden" name="recipient_id" value="{{ $otherUser->id }}">
                         <div class="flex-grow-1">
-                            <input type="text" name="content" class="form-control" placeholder="Введите ваше сообщение..." required>
+                            <input type="text" 
+                                   name="content" 
+                                   id="messageInput" 
+                                   class="form-control" 
+                                   placeholder="Введите ваше сообщение..." 
+                                   required
+                                   autocomplete="off">
                         </div>
-                        <button type="submit" class="btn btn-primary flex-shrink-0">
+                        <button type="submit" class="btn btn-primary flex-shrink-0" id="sendButton">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
@@ -259,12 +265,25 @@
 .text-purple {
     color: #6f42c1 !important;
 }
+
+/* Стили для уведомлений */
+.alert-floating {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+}
 </style>
 
 <script>
-// Автопрокрутка к последнему сообщению
 document.addEventListener('DOMContentLoaded', function() {
     const messagesContainer = document.querySelector('.messages-container');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    
+    // Автопрокрутка к последнему сообщению
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     
     // Анимация появления сообщений
@@ -272,6 +291,123 @@ document.addEventListener('DOMContentLoaded', function() {
     messages.forEach((message, index) => {
         message.style.animationDelay = `${index * 0.1}s`;
     });
+
+    // Обработка отправки формы
+    messageForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const messageContent = messageInput.value.trim();
+        
+        if (!messageContent) return;
+        
+        // Блокируем кнопку отправки
+        sendButton.disabled = true;
+        sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        // Отправляем AJAX запрос
+        fetch('{{ route("messages.store") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Добавляем новое сообщение в чат
+                addMessageToChat(data.message);
+                
+                // Очищаем поле ввода
+                messageInput.value = '';
+                
+                // Прокручиваем к последнему сообщению
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Показываем уведомление об успехе
+                showNotification('Сообщение отправлено!', 'success');
+            } else {
+                throw new Error(data.message || 'Ошибка отправки');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Ошибка отправки сообщения', 'error');
+        })
+        .finally(() => {
+            // Разблокируем кнопку отправки
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        });
+    });
+
+    // Функция добавления сообщения в чат
+    function addMessageToChat(messageData) {
+        const messageElement = createMessageElement(messageData);
+        messagesContainer.appendChild(messageElement);
+        
+        // Анимация появления
+        messageElement.style.animation = 'fadeInUp 0.3s ease-out';
+    }
+
+    // Функция создания HTML для сообщения
+    function createMessageElement(message) {
+        const isSent = message.sender_id === {{ Auth::id() }};
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message-item mb-3 ${isSent ? 'message-sent' : 'message-received'}`;
+        
+        messageDiv.innerHTML = `
+            <div class="d-flex ${isSent ? 'justify-content-end' : 'justify-content-start'}">
+                <div class="message-bubble ${isSent ? 'bg-primary text-white' : 'bg-light'}">
+                    <div class="message-content">
+                        <p class="mb-1">${message.content}</p>
+                        <small class="${isSent ? 'text-white-50' : 'text-muted'}">
+                            ${new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
+                            ${isSent ? '<i class="fas fa-check ms-1"></i>' : ''}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        return messageDiv;
+    }
+
+    // Функция показа уведомлений
+    function showNotification(message, type = 'success') {
+        // Удаляем предыдущие уведомления
+        const existingAlert = document.querySelector('.alert-floating');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert ${alertClass} alert-floating alert-dismissible fade show`;
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(alertDiv);
+
+        // Автоматически скрываем через 3 секунды
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 3000);
+    }
+
+    // Фокус на поле ввода при загрузке
+    messageInput.focus();
 });
 </script>
 @endsection

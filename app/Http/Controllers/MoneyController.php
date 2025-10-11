@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AddMoneyRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\MoneyService;
+use App\Exports\TransactionsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MoneyController extends Controller
 {
@@ -38,6 +40,8 @@ class MoneyController extends Controller
     }
 
     public function moneyExport(){
-        
+        $filename = 'vpr_bank_transactions_' . now()->format('d_m_Y_H_i') . '.xlsx';
+
+        return Excel::download(new TransactionsExport, $filename);
     }
 }

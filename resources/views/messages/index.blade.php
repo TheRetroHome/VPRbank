@@ -108,13 +108,15 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="{{ route('messages.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold">Получатель</label>
                         <select name="recipient_id" class="form-select" required>
                             <option value="">Выберите пользователя...</option>
-                            <!-- Здесь можно добавить список пользователей -->
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">

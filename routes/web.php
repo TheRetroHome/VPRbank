@@ -33,6 +33,8 @@ Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/moneyHistory', [MoneyController::class, 'moneyHistory'])->name('money.history');
        Route::post('/addMoney', [MoneyController::class, 'addMoney'])->name('money.addMoney');
 });
+       Route::get('/transactions/export', [MoneyController::class, 'moneyExport'])
+       ->middleware(AuthMiddleware::class)->name('transactions.export');
 Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/profile', [UserController::class, 'getProfile'])->name('user.profile');
        Route::patch('/updateProfile', [UserController::class, 'update'])->name('user.update');
@@ -48,5 +50,7 @@ Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
 Route::prefix('messages')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/index', [MessageController::class, 'index'])->name('messages.index');
+       Route::get('/create', [MessageController::class, 'create'])->name('messages.create');
+       Route::post('/store', [MessageController::class, 'store'])->name('messages.store');
        Route::get('/{id}', [MessageController::class, 'show'])->name('messages.show');
 });

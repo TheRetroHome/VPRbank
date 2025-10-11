@@ -191,9 +191,9 @@
                             <i class="fas fa-download fa-3x text-success mb-3"></i>
                             <h5 class="fw-bold">Выписка</h5>
                             <p class="text-muted">Скачайте полную историю операций</p>
-                            <button class="btn btn-outline-success rounded-pill w-100">
-                                <i class="fas fa-file-export me-2"></i>Экспорт
-                            </button>
+                                <a href="{{ route('transactions.export') }}" class="btn btn-success">
+                                    <i class="fas fa-file-excel me-1"></i>Экспорт в Excel
+                                </a>
                         </div>
                     </div>
                 </div>
