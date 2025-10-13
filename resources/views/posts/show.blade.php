@@ -37,10 +37,8 @@
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Редактировать</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-share me-2"></i>Поделиться</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Удалить</a></li>
                             </ul>
                         </div>
                     </div>
@@ -95,9 +93,14 @@
                 <a href="/" class="btn btn-outline-secondary me-md-2">
                     <i class="fas fa-arrow-left me-2"></i>Назад к списку
                 </a>
-                <a href="" class="btn btn-primary">
+                @if(Auth::check() && Auth::user()->is_admin)
+                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">
                     <i class="fas fa-edit me-2"></i>Редактировать
                 </a>
+                <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-danger">
+                    <i class="fas fa-trash me-2"></i>Удалить
+                </a>
+                @endif
             </div>
 
             <!-- Комментарии -->

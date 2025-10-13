@@ -40,13 +40,14 @@ Route::prefix('users')->middleware(AuthMiddleware::class)->group(function(){
        Route::patch('/updateProfile', [UserController::class, 'update'])->name('user.update');
 });
 Route::get('posts/index', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::prefix('posts')->middleware(AdminMiddleware::class)->group(function(){
        Route::get('/create', [PostController::class, 'create'])->name('posts.create');
        Route::post('/store', [PostController::class, 'store'])->name('posts.store');
+       Route::get('/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+       Route::put('/{id}', [PostController::class, 'update'])->name('posts.update');
        Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
-       Route::get('/edit', [PostController::class, 'edit'])->name('posts.edit');
 });
-Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
 Route::prefix('messages')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/index', [MessageController::class, 'index'])->name('messages.index');

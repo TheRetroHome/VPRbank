@@ -330,9 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Прокручиваем к последнему сообщению
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
-                // Показываем уведомление об успехе
-                showNotification('Сообщение отправлено!', 'success');
             } else {
                 throw new Error(data.message || 'Ошибка отправки');
             }

@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Post\CreatePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -31,15 +32,23 @@ class PostController extends Controller
         return redirect('/')->with('success', 'Пост успешно создан');
     }
 
-    public function edit(){
-        
+    public function edit($id){
+        $post = Post::findOrFail($id);
+        $tags = Tag::all();
+        return view('posts.edit', compact('post', 'tags'));
     }
 
-    public function update($id, Request $request){
-        
+    public function update($id, UpdatePostRequest $request){
+        $validated = $request->validated();
+        $post = Post::findOrFail($id);
+        $post->update($validated);
+
+        return redirect('posts/index');
     }
 
-    public function destroy(Post $post){
-        
+    public function destroy($id){
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect('posts/index');
     }
 }
