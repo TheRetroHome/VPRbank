@@ -72,6 +72,9 @@
                 <a href="/money/money" class="btn btn-light btn-sm rounded-pill">
                     <i class="fas fa-plus me-1"></i>Пополнить
                 </a>
+                <a href="/money/payment" class="btn btn-light btn-sm rounded-pill">
+                    <i class="fas fa-plus me-1"></i>Оплатить
+                </a>
             </div>
         </div>
     </div>

@@ -32,6 +32,8 @@ Route::prefix('money')->middleware(AuthMiddleware::class)->group(function(){
        Route::get('/money', [MoneyController::class, 'moneyStatic'])->name('money.static');
        Route::get('/moneyHistory', [MoneyController::class, 'moneyHistory'])->name('money.history');
        Route::post('/addMoney', [MoneyController::class, 'addMoney'])->name('money.addMoney');
+       Route::get('/payment', [MoneyController::class, 'paymentStatic'])->name('money.payment');
+       Route::post('/payment/process', [MoneyController::class, 'processPayment'])->name('money.payment.process');
 });
        Route::get('/transactions/export', [MoneyController::class, 'moneyExport'])
        ->middleware(AuthMiddleware::class)->name('transactions.export');

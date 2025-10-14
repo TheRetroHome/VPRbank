@@ -88,6 +88,24 @@ class User extends Authenticatable
         return $this;
     }
 
+    public function withdraw($amount, $description = "Оплата услуг") {
+        if ($this->cash < $amount) {
+            throw new \Exception('Недостаточно средств на балансе');
+        }
+        
+        $this->cash -= $amount;
+        $this->save();
+        
+        $this->transactions()->create([
+            'type' => 'withdrawal',
+            'amount' => -$amount,
+            'description' => $description,
+            'status' => 'completed'
+        ]);
+        
+        return $this;
+    }
+
     public function scopeUserSelect($query){
         return $query->select('id', 'name', 'email', 'password', 'created_at', 'cash', 'is_admin', 'status', 'role');
     }
