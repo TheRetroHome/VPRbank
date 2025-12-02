@@ -7,9 +7,11 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
+    /** Домашняя страница (основная на /)
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\View\View|object
+     */
     public function home(){
-        $posts = Post::with('tag')
-        ->orderBy('created_at', 'desc')
+        $posts = Post::homeStatic()
         ->paginate($this->paginate);
         
         return view('home', compact('posts'));

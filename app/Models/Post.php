@@ -23,4 +23,13 @@ class Post extends Model
     public function tag(){
         return $this->belongsTo(Tag::class);
     }
+
+    /** Выборка новостей (последние сверху)
+     * @param $query
+     * @return mixed
+     */
+    public function scopeHomeStatic($query){
+        return $query->orderBy('created_at', 'desc')
+            ->with('tag');
+    }
 }

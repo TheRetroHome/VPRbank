@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TagSeeder;
+use Database\Seeders\AdminCreateSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(TagSeeder::class);
+        $this->call(AdminCreateSeeder::class);
     }
 }

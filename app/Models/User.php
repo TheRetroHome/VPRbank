@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -108,5 +109,9 @@ class User extends Authenticatable
 
     public function scopeUserSelect($query){
         return $query->select('id', 'name', 'email', 'password', 'created_at', 'cash', 'is_admin', 'status', 'role');
+    }
+
+    public function scopeAvailableRecipients($query){
+        return $query->where('id', '!=', Auth::id());
     }
 }

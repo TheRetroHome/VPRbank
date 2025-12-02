@@ -56,34 +56,17 @@ class MoneyController extends Controller
         return view('money.payment');
     }
 
-    /**
-     * Логика оплаты (впоследствии перенести логику в сервис)
-     *
-     * @param PaymentRequest $request Принимает = [service_type, amount, account, description]
-     * @return void
-     */
-    public function processPayment(PaymentRequest $request) {
+    public function processPayment(PaymentRequest $request): RedirectResponse
+    {
         try {
-            $serviceTypes = [
-                'steam' => ['name' => 'Steam', 'icon' => 'fab fa-steam'],
-                'mobile' => ['name' => 'Мобильная связь', 'icon' => 'fas fa-mobile-alt'],
-                'internet' => ['name' => 'Интернет', 'icon' => 'fas fa-wifi'],
-                'food_delivery' => ['name' => 'Доставка еды', 'icon' => 'fas fa-utensils'],
-                'utilities' => ['name' => 'Коммунальные услуги', 'icon' => 'fas fa-home'],
-                'entertainment' => ['name' => 'Развлечения', 'icon' => 'fas fa-gamepad'],
-                'transport' => ['name' => 'Транспорт', 'icon' => 'fas fa-bus']
-            ];
+            $result = $this->moneyService->processPayment($request->validated());
 
-            $service = $serviceTypes[$request->service_type];
-            $description = $request->description ?: "Оплата {$service['name']} - {$request->account}";
+            return redirect('/')->with('success', $result['message']);
 
-            // Списание средств
-            auth()->user()->withdraw($request->amount, $description);
-
-            return redirect('/')->with('success', "Оплата {$service['name']} на сумму {$request->amount} ₽ прошла успешно!");
-            
         } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage())->withInput();
+            return back()
+                ->with('error', $e->getMessage() ?: 'Не удалось провести оплату. Недостаточно средств?')
+                ->withInput();
         }
     }
 }
