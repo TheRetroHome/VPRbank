@@ -17,7 +17,7 @@ class MessageController extends Controller
     public function index()
     {
         $conversations = $this->messageService->getConversations();
-        $users         = $this->messageService->getAvailableRecipients();
+        $users         = User::availableRecipients()->get();
 
         return view('messages.index', compact('conversations', 'users'));
     }
