@@ -9,46 +9,63 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
+use App\Services\PostService;
 
 class PostController extends Controller
 {
-    public function index(){
-        $posts = Post::with('tag')->paginate(10);
+    protected $postService;
+    public function __construct(PostService $postService){
+        $this->postService = $postService;
+    }
+    public function index()
+    {
+        $posts = $this->postService->getPaginatedPosts();
+
         return view('posts.index', compact('posts'));
     }
 
-    public function show($id){
-        $post = Post::findOrFail($id);
+    public function show($id)
+    {
+        $post = $this->postService->getPostById($id);
+
         return view('posts.show', compact('post'));
     }
 
-    public function create(){
-        $tags = Tag::all();
+    public function create()
+    {
+        $tags = $this->postService->getAllTags();
+
         return view('posts.create', compact('tags'));
     }
 
-    public function store(CreatePostRequest $request){
-        $post = Post::create($request->validated());
+    public function store(CreatePostRequest $request)
+    {
+        $this->postService->createPost($request->validated());
+
         return redirect('/')->with('success', 'Пост успешно создан');
     }
 
-    public function edit($id){
-        $post = Post::findOrFail($id);
-        $tags = Tag::all();
+    public function edit($id)
+    {
+        $post = $this->postService->getPostById($id);
+        $tags = $this->postService->getAllTags();
+
         return view('posts.edit', compact('post', 'tags'));
     }
 
-    public function update($id, UpdatePostRequest $request){
-        $validated = $request->validated();
-        $post = Post::findOrFail($id);
-        $post->update($validated);
+    public function update($id, UpdatePostRequest $request)
+    {
+        $this->postService->updatePost($id, $request->validated());
 
-        return redirect('posts/index');
+        return redirect()->route('posts.index')
+                         ->with('success', 'Пост успешно обновлён');
     }
 
-    public function destroy($id){
-        $post = Post::findOrFail($id);
-        $post->delete();
-        return redirect('posts/index');
+    public function destroy($id)
+    {
+        $this->postService->deletePost($id);
+
+        return redirect()->route('posts.index')
+                         ->with('success', 'Пост успешно удалён');
     }
 }

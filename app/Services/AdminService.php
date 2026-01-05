@@ -7,7 +7,19 @@ use Illuminate\Support\Facades\Auth;
 
 
 class AdminService{
-    
+
+    /**
+     * Удаляет пользователя по указанному ID
+     *
+     * Запрещено удалять собственный аккаунт.
+     * В случае успеха или ошибки возвращает массив с информацией о результате операции.
+     *
+     * @param int $id ID пользователя, которого нужно удалить
+     * @return array Массив с ключами:
+     *               - success (bool)   - успешность операции
+     *               - message (string) - текстовое сообщение для пользователя
+     *               - redirect (string)- маршрут для редиректа
+     */
     public function deleteUser($id){
         try{
             $user = User::findOrFail($id);
@@ -42,6 +54,19 @@ class AdminService{
         }
     }
 
+    /**
+     * Изменяет статус администратора для указанного пользователя
+     *
+     * Запрещено снимать права администратора с собственного аккаунта.
+     * При изменении статуса также обновляется поле role (Администратор/Клиент).
+     *
+     * @param bool $is_admin Новый статус администратора (true/false)
+     * @param int  $id       ID пользователя
+     * @return array Массив с ключами:
+     *               - success (bool)   - успешность операции
+     *               - message (string) - текстовое сообщение для пользователя
+     *               - redirect (string)- маршрут для редиректа
+     */
     public function setAdmin ($is_admin, $id){
         try{
             $user = User::findOrFail($id);
